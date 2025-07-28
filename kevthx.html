@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #0d47a1;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .container {
+      cursor: default;
+      perspective: 800px;
+      transition: transform 0.2s ease-out;
+      will-change: transform;
+      max-width: 700px;
+    }
+
+    h1, p, a {
+      margin: 0 0 1.5em 0;
+      display: block;
+      font-weight: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      white-space: normal;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    p {
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    a {
+      font-weight: bold;
+      color: #80d8ff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: text-decoration 0.3s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Word styling for h1 */
+    .word {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      margin: 0 0.25em;
+      user-select: none;
+    }
+
+    .word:hover {
+      transform: scale(1.4) rotate(5deg);
+      color: #80d8ff;
+      text-shadow: 0 0 8px #80d8ff;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="spin-container">
+    <h1 id="thankyou-title"></h1>
+    <p id="thankyou-msg"></p>
+    <a href="index.html" id="thankyou-link"></a>
+  </div>
+
+  <script>
+    // Split a string by spaces into word spans (for h1)
+    function splitToWordSpans(element, text) {
+      element.innerHTML = '';
+      const words = text.split(' ');
+      words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.textContent = word + (i < words.length - 1 ? ' ' : '');
+        span.classList.add('word');
+        element.appendChild(span);
+      });
+    }
+
+    // No animation for paragraph and link, so just set text content
+    function setPlainText(element, text) {
+      element.textContent = text;
+    }
+
+    const titleText = 'Thank You!';
+    const msgText = 'Your message has been sent successfully. I will get back to you soon.';
+    const linkText = 'Return to Portfolio';
+
+    const titleEl = document.getElementById('thankyou-title');
+    const msgEl = document.getElementById('thankyou-msg');
+    const linkEl = document.getElementById('thankyou-link');
+
+    splitToWordSpans(titleEl, titleText);
+    setPlainText(msgEl, msgText);
+    setPlainText(linkEl, linkText);
+
+    linkEl.href = 'index.html';
+
+    const container = document.getElementById('spin-container');
+
+    window.addEventListener('mousemove', e => {
+      const centerX = window.innerWidth / 2;
+      const maxRotation = 15; // max degrees rotateY
+      const deltaX = e.clientX - centerX;
+      const percent = deltaX / centerX; // -1 to 1
+      const rotationY = percent * maxRotation;
+      container.style.transform = `rotateY(${rotationY}deg)`;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      container.style.transform = 'rotateY(0deg)';
+    });
+  </script>
+</body>
+</html>
